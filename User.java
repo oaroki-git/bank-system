@@ -82,7 +82,7 @@ public class User extends Account {
   public int addCard (String password) throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
     if (!verify(password)) {return 1;}
-    Card card = new Card();
+    Card card = new Card(password);
     insert(search(card.getID()), card);
     return 0;
   } //Admin cannot add card to any User.
