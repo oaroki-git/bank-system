@@ -8,7 +8,6 @@ public class User extends Account {
   private final String salt;
   private String passwordHash;
   private boolean loggedIn = false;
-
   private String address;
   private ArrayList<Card> cards = new ArrayList<Card>();
 
