@@ -22,6 +22,7 @@ public class User extends Account {
   } //shorthand for password verification.
     //Card management related
   private int search (int id) {
+    if (cards.size()==0) {return 0;}
     if (cards.get(0).getID()>=id) {return 0;}
     if (cards.get(cards.size()-1).getID()<=id) {return cards.size();}
     int L = 0;
