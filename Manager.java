@@ -1,3 +1,4 @@
+/*//abandoned
 import bank.user.Admin;
 
 public class Manager extends Admin {
@@ -6,3 +7,4 @@ public class Manager extends Admin {
     if (!admin.getStatus()) {throw new Exception("Admin not logged in");}
   }
 }
+*/

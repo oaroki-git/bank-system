@@ -3,7 +3,7 @@ import bank.user.Account;
 import bank.security.Hashes;
 
 public class Admin extends Account {
-  private static int total = 0;
+  private static boolean rootCreated = false;
   
   private final String username;
   private final String salt;
@@ -18,16 +18,19 @@ public class Admin extends Account {
     return true;
   }
   
-  //Admin class is not static, but there can only be one instance of it.
-  //That is so that the instance can be stored and accessed alongside User instances
-  //and that no one can create an Admin class with another set of credentials.
   public Admin (String username, String password) throws Exception {
-    if (Admin.total!=0) {throw new Exception("Admin is already initialized");}
+    if (rootCreated) {throw new Exception("Root admin is already initialized.");}
     this.username = username;
     this.salt = ""+((int)(Math.random()*0xffff));
     this.passwordHash = hashString(password);
-    Admin.total = 1;
-  }
+    rootCreated = true;
+  } //constructor for root admin.
+  public Admin (String username, String password, Admin admin) throws Exception {
+    if (!admin.getStatus()) {throw new Exception("Provided admin is not logged in.");}
+    this.username = username;
+    this.salt = ""+((int)(Math.random()*0xffff));
+    this.passwordHash = hashString(password);
+  } //constructor for other admins.
 
   //Admin doesn't have any fields that require protection from unlogged accessing;
   //however, its loggedIn variable must be accessible to secure admin access to User.

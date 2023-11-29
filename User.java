@@ -37,6 +37,7 @@ public class User extends Account {
       if (currentID > id) {R = pointer;continue;}
     } return R;
   } //binary search for Card with closest id to the input, returns index.
+  /*
   private void insert (int idx, Card card) {
     cards.add(null);
     for (int i=cards.size()-2;i>=idx;i--) {
@@ -44,7 +45,7 @@ public class User extends Account {
     }
     cards.set(idx, card);
   } //inserts created Card object to given index.
-
+  *///it was unnecessary, slower than Arraylist<T>.add(int idx, T obj)
 
   public User (String username, String password, String address, Admin admin) throws Exception {
     if (!admin.getStatus()) {
@@ -83,7 +84,7 @@ public class User extends Account {
     if (!loggedIn) {throw new Exception("Not logged in.");}
     if (!verify(password)) {return 1;}
     Card card = new Card(password);
-    insert(search(card.getID()), card);
+    cards.add(search(card.getID()), card);
     return 0;
   } //Admin cannot add card to any User.
   public ArrayList<Card> getCards () throws Exception {
