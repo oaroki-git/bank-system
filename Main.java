@@ -6,44 +6,64 @@ import java.util.ArrayList;
 
 public class Main {
 	
-	static boolean proceed = true;
-	static Scanner s = new Scanner(System.in);
-	static ArrayList<Account> accounts = new ArrayList<Account>();
+    static boolean proceed = true;
+    static Scanner s = new Scanner(System.in);
+    Collection accounts = new Collection();
+    int choice = 0;
+    int page = 'l';
 
-	public static void main(String[] args) throws Exception{
-		print("enter Admin username");
-		String tempName = s.nextLine();
-		print("enter Admin password");
-		String tempPass = s.nextLine();
+    create("admin", "password");
+    public static void main(String[] args) throws Exception{
 
+    	while (proceed) {
+	    switch(page){
+		case 'l': loginPage();
+		case 'm': managerPage();
+		case 'u': userPage();
+	    }
+    	}
+    }
 
-		create(tempName, tempPass);
+    //all create accounts
 
-		while (proceed) {
-			continue;	
-		}
+    public static void create(String username, String password) throws Exception{
+    	accounts.add(new Admin(username, password));}
+
+    public static void create(String username, String password, Admin admin) throws Exception{
+    	accounts.add(new Admin(username, password, admin));}
+
+    public static void create(String username, String password, Admin admin, String address)throws Exception{
+    	accounts.add(new User(username, password, address, admin));}
+
+   //login to account
+
+    public static Account get(String username){return accounts.get(username);} //get account and pass to login
+
+    public static void login(Account account, String password) throws Exception{account.login(password);}
+
+    //interfaces
+
+    public static void loginPage(){
+	System.out.println("select login \n1. manager   2. user");
+	choice = s.nextInt();
+
+	System.out.println("enter username and password (separated by space)");
+	String str = s.nextLine();
+	String[] splited = str.split("\\s+");
+	login(get(splited[0]), splited[1]);
+
+	switch(choice){
+	    case 1: page = 'm';
+	    case 2: page = 'u';
+
 	}
+    }
 
-	public static void create(String username, String password) throws Exception{
-		accounts.add(new Admin(username, password));
-	}
+    public static void managerPage(){
+	System.out.println("~manager~");
+    }
 
-	/*
-	public static void create(String username, String password, Admin admin) throws Exception{
-		accounts.add(new Manager(username, password, admin));
-	}*/
-
-	public static void create(String username, String password, Admin admin, String address)throws Exception{
-		accounts.add(new User(username, password, address, admin));
-	}
-
-
-	public static void print(String text, boolean newline){
-		if (newline){System.out.println(text);}
-		else{System.out.print(text);}
-	}
-	public static void print(String text){
-		System.out.println(text);
-	}
-
+    public static void userPage(){
+	System.out.println("~user~");
+    }
 }
