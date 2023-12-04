@@ -77,7 +77,7 @@ public class User extends Account {
   public Card getCard (int id) throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
     int idx = search(id);
-    if (idx==(cards.size()-1)) {return null;}
+    if (idx==(cards.size())) {return null;}
     Card card = cards.get(idx);
     if (card.getID()==id) {return card;}
     return null; //no such instance
