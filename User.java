@@ -24,7 +24,7 @@ public class User extends Account {
   private int search (int id) {
     if (cards.size()==0) {return 0;}
     if (cards.get(0).getID()>=id) {return 0;}
-    if (cards.get(cards.size()-1).getID()<=id) {return cards.size();}
+    //if (cards.get(cards.size()-1).getID()<=id) {return cards.size();} //not necessary, but handy nonetheless.
     int L = 0;
     int R = cards.size();
     int pointer = -1;
@@ -76,7 +76,9 @@ public class User extends Account {
   //Card related stuff
   public Card getCard (int id) throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
-    Card card = cards.get(search(id));
+    int idx = search(id);
+    if (idx==(cards.size()-1)) {return null;}
+    Card card = cards.get(idx);
     if (card.getID()==id) {return card;}
     return null; //no such instance
   }

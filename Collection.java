@@ -24,7 +24,7 @@ public class Collection {
 
   public Account get(String username) {
     int idx = search(username);
-    if (idx==0) {return null;}
+    if (idx==(accounts.size()-1)) {return null;}
     Account acc = accounts.get(idx);
     if (!username.equals(acc.getUsername())) {return null;}
     return acc;
