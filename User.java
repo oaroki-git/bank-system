@@ -29,13 +29,13 @@ public class User extends Account {
     int R = cards.size();
     int pointer = -1;
     int currentID = -1;
-    do {
+    while ((R-L)!=1) {
       pointer = L+(R-L)/2;
       currentID = cards.get(pointer).getID();
       if (currentID == id) {return pointer;}
       if (currentID < id) {L = pointer;continue;}
       if (currentID > id) {R = pointer;continue;}
-    } while ((R-L)!=1);return R;
+    } return R;
   } //binary search for Card with closest id to the input, returns index.
   /*
   private void insert (int idx, Card card) {

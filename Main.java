@@ -1,30 +1,29 @@
 package bank;
 import bank.user.*;
-
-import java.util.Scanner;
-import java.util.ArrayList;
+import bank.IO;
 
 public class Main {
 	
     static boolean proceed = true;
-    static Scanner s = new Scanner(System.in);
-    Collection accounts = new Collection();
-    int choice = 0;
-    int page = 'l';
+    static Collection accounts = new Collection();
+    static int choice = 0;
+    static int page = 'l';
 
-    create("admin", "password");
+    //mainloop
     public static void main(String[] args) throws Exception{
-
-    	while (proceed) {
+	
+	create("admin", "password");
+    	
+	while (proceed) {
 	    switch(page){
-		case 'l': loginPage();
-		case 'm': managerPage();
-		case 'u': userPage();
+		case 'l': loginPage(); break;
+		case 'm': managerPage(); break;
+		case 'u': userPage(); break;
 	    }
     	}
     }
 
-    //all create accounts
+    //create accounts
 
     public static void create(String username, String password) throws Exception{
     	accounts.add(new Admin(username, password));}
@@ -37,20 +36,23 @@ public class Main {
 
    //login to account
 
-    public static Account get(String username){return accounts.get(username);} //get account and pass to login
-
-    public static void login(Account account, String password) throws Exception{account.login(password);}
+    public static Account get(String username)throws Exception{return accounts.get(username);} //get account and pass to login
+    public static void login(Account account, String password)throws Exception{account.login(password);}
 
     //interfaces
 
-    public static void loginPage(){
-	System.out.println("select login \n1. manager   2. user");
-	choice = s.nextInt();
+    public static void loginPage()throws Exception{
+	try{
+	    choice = Integer.parseInt(IO.input("select login \n1. manager   2. user\n"));
+	} catch (NumberFormatException e){
+	    IO.print("invalid choice");
+	    page = 'l';
+	    return;
+	}
 
-	System.out.println("enter username and password (separated by space)");
-	String str = s.nextLine();
-	String[] splited = str.split("\\s+");
-	login(get(splited[0]), splited[1]);
+	String str = IO.input("enter username and password (separated by commas)\n");
+	String[] split = str.split(",");
+	login(get(split[0]), split[1]);
 
 	switch(choice){
 	    case 1: page = 'm';
@@ -59,11 +61,11 @@ public class Main {
 	}
     }
 
-    public static void managerPage(){
+    public static void managerPage()throws Exception{
 	System.out.println("~manager~");
     }
 
-    public static void userPage(){
+    public static void userPage()throws Exception{
 	System.out.println("~user~");
     }
 }
