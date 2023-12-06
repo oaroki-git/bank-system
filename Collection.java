@@ -1,7 +1,7 @@
 package bank.user;
-//import bank.user.Account;
-import bank.user.*;
-import bank.IO;
+import bank.user.Account;
+//import bank.user.*;
+//import bank.IO;
 import java.util.ArrayList;
 
 public class Collection {	
@@ -37,10 +37,10 @@ public class Collection {
     accounts.add(search(acc.getUsername()), acc);
   }
 
-  public static void main (String[] args) throws Exception {
-    Collection accounts = new Collection();
-    accounts.add(new Admin("root", "root"));
-    Account acc = accounts.get("root");
-    IO.print(acc.toString());
-  } 
+//  public static void main (String[] args) throws Exception {
+//    Collection accounts = new Collection();
+//    accounts.add(new Admin("root", "root"));
+//    Account acc = accounts.get("root");
+//    IO.print(acc.toString());
+//  } 
 }
