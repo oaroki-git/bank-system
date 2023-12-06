@@ -1,5 +1,7 @@
 package bank.user;
-import bank.user.Account;
+//import bank.user.Account;
+import bank.user.*;
+import bank.IO;
 import java.util.ArrayList;
 
 public class Collection {	
@@ -13,13 +15,13 @@ public class Collection {
     int R = accounts.size();
     int pointer = -1;
     String currentUsername = " ";
-    while ((R-L!=1)) {
+    do {
       pointer = L+(L-R)/2;
       currentUsername = accounts.get(pointer).getUsername();
       if (currentUsername.equals(username)) {return pointer;}
-      if ((currentUsername.compareTo(username)) <0) {R = pointer;continue;}
-      if ((currentUsername.compareTo(username)) >0) {L = pointer;continue;}
-    } return R;
+      if ((currentUsername.compareTo(username)) >0) {R = pointer;continue;}
+      if ((currentUsername.compareTo(username)) <0) {L = pointer;continue;}
+    } while ((R-L!=1)); return R;
   }
 
   public Account get(String username) {
@@ -34,4 +36,11 @@ public class Collection {
     if (!(get(acc.getUsername())==null)) {throw new Exception("Username Collision.");}
     accounts.add(search(acc.getUsername()), acc);
   }
+
+  public static void main (String[] args) throws Exception {
+    Collection accounts = new Collection();
+    accounts.add(new Admin("root", "root"));
+    Account acc = accounts.get("root");
+    IO.print(acc.toString());
+  } 
 }
