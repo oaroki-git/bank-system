@@ -10,6 +10,7 @@ public class User extends Account {
   private boolean loggedIn = false;
   private String address;
   private ArrayList<Card> cards = new ArrayList<Card>();
+  private ArrayList<Integer> cardIDs = new ArrayList<Integer>();
 
   //client-inaccessible methods
     //password-related
@@ -87,6 +88,7 @@ public class User extends Account {
     if (!verify(password)) {return 1;}
     Card card = new Card(password);
     cards.add(search(card.getID()), card);
+    cardIDs.add(card.getID());
     return 0;
   } //Admin cannot add card to any User.
   public ArrayList<Card> getCards () throws Exception {
@@ -110,4 +112,8 @@ public class User extends Account {
   public String getUsername () {return username;}
   public String getAddress () {return address;}
   public boolean getStatus () {return loggedIn;}
+  public ArrayList<Integer> getIDs () {
+    ArrayList<Integer> ids = new ArrayList<>();
+    for (int id: cardIDs) {ids.add(id);} return ids;
+  }
 }
