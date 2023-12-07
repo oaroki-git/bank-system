@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
 	
 	create("admin", "password");
-	IO.print("welcome to your definetly safe and real neighbour bank");
+	IO.print("welcome to your definetly safe and real neighbour bank\n");
     	
 	while (proceed) {
 	    switch(page){
@@ -40,8 +40,12 @@ public class Main {
     	accounts.add(new User(username, password, address, admin));}
 
    //login to account
-    public static Account get(String username)throws Exception{return accounts.get(username);} //get account and pass to login
-    public static void login(Account account, String password)throws Exception{account.login(password);}
+    public static Account get(String username)throws Exception{
+	Account acc = accounts.get(username);
+	if (acc==null) {
+	throw new Exception("invalid username");}
+	return acc;} //get account and pass to login
+    public static int login(Account account, String password)throws Exception{return account.login(password);}
 
     //interfaces
 
@@ -57,8 +61,9 @@ public class Main {
 	if ( choiceCheck(2)){
 	    str = IO.input("enter username and password (separated by commas)\n");
 	    split = str.split(",");
-	    account = get(split[0]);
-	    login(account, split[1]);
+	    try{account = get(split[0]);}
+	    catch (Exception e){IO.print("invalid username or password\n"); page = 'l'; return;}
+	    if (login(account, split[1]) == 1){IO.print("invalid username or password\n"); page = 'l'; return;}
 
 	    switch(choice){
 		case 1: page = 'm'; return;
@@ -74,7 +79,7 @@ public class Main {
 	if(!(account instanceof Admin)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 
 	Admin manager = (Admin) account;
-	IO.print("logged in as manager" + manager.getUsername() + "\n");
+	IO.print("logged in as manager " + manager.getUsername() + "\n");
 	
 	try{choice = Integer.parseInt(IO.input("~manager~\n1. view transactions 2. add account 3. change interest rate \npress any key to log out\n"));}
 	catch (NumberFormatException e){
@@ -108,14 +113,16 @@ public class Main {
 	    case 1:
 		str = IO.input("enter username, password and adress of new user (separated by commas)\n");
 		split = str.split(",");
-		create(split[0], split[1], manager, split[2]);
-		IO.print("user " + split[0] + " created");
+		try{ create(split[0], split[1], manager, split[2]);}
+		catch (Exception e){IO.print("This user already exists. please make sure the username and password are unique.\n"); return;}
+		IO.print("user " + split[0] + " created \n");
 		return;
 	    case 2:
 	        str = IO.input("enter username and password of new manager (separated by commas)\n");
     		split = str.split(",");
-		create(split[0], split[1], manager);
-		IO.print("manager " + split[0] + " created");
+		try{ create(split[0], split[1], manager);}
+		catch (Exception e){IO.print("This account already exists. please make sure the username and password are unique.\n"); return;}
+		IO.print("manager " + split[0] + " created \n");
 		return;
 	    default: return;
 	}
@@ -138,6 +145,8 @@ public class Main {
 
     //user pages
     public static void userPage(Account account)throws Exception{
+	if(account.getStatus()){IO.print("user logged in");}
+	else{IO.print("user logged out");}
 	if(account == null){IO.print("error no user passed\n"); page = 'l'; return;}
 	if(!(account instanceof User)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 	
@@ -160,6 +169,9 @@ public class Main {
     }
 
     public static void userSettingsPage(User user)throws Exception{
+	if(account.getStatus()){IO.print("user logged in");}
+	else{IO.print("user logged out");}
+
 	if(user == null){IO.print("error no user passed\n"); page = 'l'; return;}
 
 	try{choice = Integer.parseInt(IO.input("~user settings~\n1. change password 2. change address 3. add card\n press any key to go back\n"));}
