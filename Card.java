@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Card {
   private static int total = 0;
   private static final int encodeKey = 0x7afcabed;
+  private static ArrayList<Transanction> rootTransanctions = new ArrayList<>();
 
   private int id;
   private double balance;
@@ -49,6 +50,7 @@ public class Card {
     if (amount <= 0) {return -1;} //error: user is wasting CPU time.
     balance += amount;
     transanctions.add(new Transanction(amount, id));
+    rootTransanctions.add(new Transanction(amount, id));
     return 0;
   }
   public int withdraw (double amount, String password) {
@@ -56,8 +58,13 @@ public class Card {
     if (amount > balance) {return -1;} //error: user going into debt.
     balance -= amount;
     transanctions.add(new Transanction(-amount, id));
+    rootTransanctions.add(new Transanction(-amount, id));
     return 0;
   }
 
   public ArrayList<Transanction> getTransanctions () {return transanctions;}
+  public static ArrayList<Transanction> getAllTransanctions throws Exception (Admin admin) {
+    if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
+    return rootTransanctions;
+  }
 }
