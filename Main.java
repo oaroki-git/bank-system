@@ -32,12 +32,11 @@ public class Main {
     //create accounts
     public static void create(String username, String password) throws Exception{
     	accounts.add(new Admin(username, password));}
-
     public static void create(String username, String password, Admin admin) throws Exception{
     	accounts.add(new Admin(username, password, admin));}
-
     public static void create(String username, String password, Admin admin, String address)throws Exception{
     	accounts.add(new User(username, password, address, admin));}
+
 
    //login to account
     public static Account get(String username)throws Exception{
@@ -47,7 +46,9 @@ public class Main {
 	return acc;} //get account and pass to login
     public static int login(Account account, String password)throws Exception{return account.login(password);}
 
-    //interfaces
+    
+    //interfaces ---------------------------------------------------------------------------------
+
 
     //login
     public static void loginPage()throws Exception{
@@ -58,7 +59,7 @@ public class Main {
 	    return;
 	}
 
-	if ( choiceCheck(2)){
+	if (choice > 0 && choice < 3){
 	    str = IO.input("enter username and password (separated by commas)\n");
 	    split = str.split(",");
 	    try{account = get(split[0]);}
@@ -72,10 +73,9 @@ public class Main {
 	}
     }
 
+
     //manager pages
     public static void managerPage(Account account)throws Exception{
-	if(account.getStatus()){IO.print("user logged in");}
-	else{IO.print("user logged out");}
 
 	if(account == null){IO.print("error no user passed\n"); page = 'l'; return;}
 	if(!(account instanceof Admin)) {IO.print("invalid credentials\n"); page = 'l'; return;}
@@ -94,11 +94,11 @@ public class Main {
 	    case 1: return; //view transactions
 	    case 2: addAccountPage(manager); return;
 	    case 3: changeInterestPage(manager); return;
-	    //case [n]: managerSettingsPage(manager); //for if we need a settings page
 	    default: manager.logout(); page = 'l'; return;
 	}
 	
     }
+
 
     public static void changeInterestPage(Admin manager) throws Exception{
 	if(manager == null){IO.print("error no user passed\n"); page = 'l'; return;}
@@ -116,44 +116,35 @@ public class Main {
 		str = IO.input("enter username, password and adress of new user (separated by commas)\n");
 		split = str.split(",");
 		try{ create(split[0], split[1], manager, split[2]);}
-		catch (Exception e){IO.print("This user already exists. please make sure the username and password are unique.\n"); return;}
+		catch (Exception e){
+		    if(e instanceof IndexOutOfBoundsException){IO.print("please fill in all fields."); return;}
+		    IO.print("This user already exists. please make sure the username and password are unique.\n"); return;
+		}
 		IO.print("user " + split[0] + " created \n");
 		return;
 	    case 2:
 	        str = IO.input("enter username and password of new manager (separated by commas)\n");
     		split = str.split(",");
 		try{ create(split[0], split[1], manager);}
-		catch (Exception e){IO.print("This account already exists. please make sure the username and password are unique.\n"); return;}
+		catch (Exception e){
+		    if(e instanceof IndexOutOfBoundsException){IO.print("please fill in all fields."); return;}
+		    IO.print("This account already exists. please make sure the username and password are unique.\n"); return;
+		}
 		IO.print("manager " + split[0] + " created \n");
 		return;
 	    default: return;
 	}
     }
     
-    //manager doesn't need a settings page (i thought it did and idk if we'll add one so here is the leftover code)
-    /*
-    public static void managerSettingsPage(Admin manager){
-	if(manager == null){IO.print("error no user passed\n"); return;}
-
-	try{choice = Integer.parseInt(IO.input("~manager settings~\n1. change password 2. change address \n press any key to go back\n"));}
-	catch (NumberFormatException e){
-	    IO.print("invalid choice\n");
-	    page = 's';
-	    return;
-	}
-
-    }
-    */
 
     //user pages
     public static void userPage(Account account)throws Exception{
-	if(account.getStatus()){IO.print("user logged in");}
-	else{IO.print("user logged out");}
 	if(account == null){IO.print("error no user passed\n"); page = 'l'; return;}
 	if(!(account instanceof User)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 	
 	User user = (User) account;
 	IO.print("logged in as user " + user.getUsername() + "\n");
+	if(user.getCards().size() == 0){IO.print("you currently don't have a bank card. add one in settings.\n")}
 
 	Card card = null;
 	int amount = 0;
@@ -166,21 +157,37 @@ public class Main {
 	}
 
 	switch(choice){
-	    case 1: card = chooseCard(user);
-		    try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
-		    catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
-		    if(!(card.deposit(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
-		    IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance());
-		    return;
-	    case 2: card = chooseCard(user); 
-		    try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
-		    catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
-		    if(!(card.withdraw(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
-		    IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance());   
-		    return;
+	    case 1: deposit(user, amount, card) return;
+	    case 2: withdraw(user, amount, card); return;
 	    case 3: userSettingsPage(user); return;
 	    default: user.logout(); page = 'l'; return;
 	}
+    }
+
+
+    public static void deposit(User user, int amount, Card card)throws Exception{
+	if(user.getCards().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
+
+	card = chooseCard(user);
+	if(card == null){IO.print("invalid card."); return;}
+
+	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
+	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
+
+	if(!(card.deposit(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
+	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance());
+    }
+
+    public static void withdraw(User user, int amount, Card card)throws Exception{
+	if(user.getCards().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
+	    
+	card = chooseCard(user);
+	if(card ==null){IO.print("invalid card."); return;}
+
+	try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
+	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
+	if(!(card.withdraw(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
+	IO.print("your balance was $" + (card.getBalance() + amount) + "and is now $" + card.getBalance());  
     }
 
     public static void userSettingsPage(User user)throws Exception{
@@ -208,6 +215,7 @@ public class Main {
 	}
     }
 
+
     public static Card chooseCard(User user)throws Exception{
 	IO.print("choose card to use below: \n");
 	ArrayList<Card> cards = user.getCards();
@@ -219,14 +227,8 @@ public class Main {
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
-	catch (NumberFormatException e){IO.print("invalid option"); return chooseCard(user);}
+	catch (NumberFormatException e){IO.print("invalid option"); return null; );}
 	try{return cards.get(choice-1);}
-	catch (IndexOutOfBoundsException e){IO.print("invalid option"); return chooseCard(user);}
+	catch (IndexOutOfBoundsException e){IO.print("invalid option"); return null;}
     }
-
-    //quality of life
-    //this pretty much became useless anyway but i'm too lazy to delete
-    //maybe someone else do it for me thx <3
-    //it's literally only used once
-    public static boolean choiceCheck(int choices){return (choice < choices+1 && choice > 0);}
 }
