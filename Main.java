@@ -1,6 +1,7 @@
 package bank;
 import bank.user.*;
 import bank.IO;
+import java.util.ArrayList;
 
 public class Main {
 	
@@ -171,7 +172,8 @@ public class Main {
 		user.setAddress(IO.input("enter your password again"), IO.input("enter your new address"));
 	    case 3:
 		user.addCard(IO.input("enter your password again"));
-		IO.print("your id for this card is " + )
+		ArrayList<Integer> ids = user.getIDs();
+		IO.print("your id for this card is " + ids.get(ids.size()-1));
 
 	    default: return;
 

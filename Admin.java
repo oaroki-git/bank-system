@@ -9,7 +9,7 @@ public class Admin extends Account {
   private final String salt;
   private String passwordHash;
   private boolean loggedIn = false;
-:w
+
   private String hashString (String in) {
     return Hashes.sha256(in+salt);
   }
