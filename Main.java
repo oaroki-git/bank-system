@@ -68,13 +68,15 @@ public class Main {
 	    switch(choice){
 		case 1: page = 'm'; return;
 		case 2: page = 'u'; return;
-	    //change after adding the getIdentity funtions(or not)
 	    }
 	}
     }
 
     //manager pages
     public static void managerPage(Account account)throws Exception{
+	if(account.getStatus()){IO.print("user logged in");}
+	else{IO.print("user logged out");}
+
 	if(account == null){IO.print("error no user passed\n"); page = 'l'; return;}
 	if(!(account instanceof Admin)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 
@@ -153,6 +155,9 @@ public class Main {
 	User user = (User) account;
 	IO.print("logged in as user " + user.getUsername() + "\n");
 
+	Card card = null;
+	int amount = 0;
+
 	try{choice = Integer.parseInt(IO.input("~user~\n1. deposit 2. withdraw 3. settings\npress any key to log out\n"));}
 	catch (NumberFormatException e){
 	    user.logout();
@@ -161,8 +166,18 @@ public class Main {
 	}
 
 	switch(choice){
-	    case 1: return; //deposit
-	    case 2: return; //withdraw
+	    case 1: card = chooseCard(user);
+		    try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
+		    catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
+		    if(!(card.deposit(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
+		    IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance());
+		    return;
+	    case 2: card = chooseCard(user); 
+		    try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
+		    catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
+		    if(!(card.withdraw(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
+		    IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance());   
+		    return;
 	    case 3: userSettingsPage(user); return;
 	    default: user.logout(); page = 'l'; return;
 	}
@@ -179,17 +194,34 @@ public class Main {
 
 	switch(choice){
 	    case 1: 
-		user.setPassword(IO.input("enter your old password"), IO.input("enter your new password"));
+		user.setPassword(IO.input("enter your old password"), IO.input("enter your new password")); return;
 	    case 2:
-		user.setAddress(IO.input("enter your password again"), IO.input("enter your new address"));
+		user.setAddress(IO.input("enter your password again"), IO.input("enter your new address")); return;
 	    case 3:
 		user.addCard(IO.input("enter your password again"));
 		ArrayList<Integer> ids = user.getIDs();
 		IO.print("your id for this card is " + ids.get(ids.size()-1));
+		return;
 
 	    default: return;
 
 	}
+    }
+
+    public static Card chooseCard(User user)throws Exception{
+	IO.print("choose card to use below: \n");
+	ArrayList<Card> cards = user.getCards();
+	int i = 1;
+
+	IO.print("No. | ID	    | balance\n");
+	for(Card card : cards){
+	    IO.print(i + ". | " + card.getID() + " | " + card.getBalance() +"\n");
+	    i += 1;
+	}
+	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
+	catch (NumberFormatException e){IO.print("invalid option"); return chooseCard(user);}
+	try{return cards.get(choice-1);}
+	catch (IndexOutOfBoundsException e){IO.print("invalid option"); return chooseCard(user);}
     }
 
     //quality of life
