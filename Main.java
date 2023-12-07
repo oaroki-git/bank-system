@@ -7,7 +7,7 @@ public class Main {
     static boolean proceed = true;
     static Collection accounts = new Collection();
     static int choice = 0;
-    static int page = 'l';
+    static char page = 'l';
     static Account account = null;
     static String str = "";
     static String[] split = null;
@@ -16,6 +16,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
 	
 	create("admin", "password");
+	IO.print("welcome to your definetly safe and real neighbour bank");
     	
 	while (proceed) {
 	    switch(page){
@@ -68,8 +69,8 @@ public class Main {
 
     //manager pages
     public static void managerPage(Account account)throws Exception{
-	if(account == null){IO.print("error no user passed\n"); return;}
-	if(!(account instanceof Admin)) {IO.print("error account type mismatch\n"); return;}
+	if(account == null){IO.print("error no user passed\n"); page = 'l'; return;}
+	if(!(account instanceof Admin)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 
 	Admin manager = (Admin) account;
 	IO.print("logged in as manager" + manager.getUsername() + "\n");
@@ -82,7 +83,7 @@ public class Main {
 	}
 
 	switch(choice){
-	    case 1: return;
+	    case 1: return; //view transactions
 	    case 2: addAccountPage(manager); return;
 	    case 3: changeInterestPage(manager); return;
 	    //case [n]: managerSettingsPage(manager); //for if we need a settings page
@@ -92,12 +93,12 @@ public class Main {
     }
 
     public static void changeInterestPage(Admin manager) throws Exception{
-	if(manager == null){IO.print("error no user passed\n"); return;}
+	if(manager == null){IO.print("error no user passed\n"); page = 'l'; return;}
 	IO.print("this functionality does not exist yet\n");
     };
 
     public static void addAccountPage(Admin manager) throws Exception{
-	if(manager == null){IO.print("error no user passed\n"); return;}
+	if(manager == null){IO.print("error no user passed\n"); page = 'l'; return;}
 
 	try{choice = Integer.parseInt(IO.input("~add account~\n1. user 2. manager \npress any key to go back\n"));}
 	catch (NumberFormatException e){return;}
@@ -136,8 +137,8 @@ public class Main {
 
     //user pages
     public static void userPage(Account account)throws Exception{
-	if(account == null){IO.print("error no user passed\n"); return;}
-	if(!(account instanceof User)) {IO.print("error account type mismatch\n"); return;}
+	if(account == null){IO.print("error no user passed\n"); page = 'l'; return;}
+	if(!(account instanceof User)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 	
 	User user = (User) account;
 	IO.print("logged in as user " + user.getUsername() + "\n");
@@ -150,17 +151,17 @@ public class Main {
 	}
 
 	switch(choice){
-	    case 1: return;
-	    case 2: return;
+	    case 1: return; //deposit
+	    case 2: return; //withdraw
 	    case 3: userSettingsPage(user); return;
 	    default: user.logout(); page = 'l'; return;
 	}
     }
 
     public static void userSettingsPage(User user)throws Exception{
-	if(user == null){IO.print("error no user passed\n"); return;}
+	if(user == null){IO.print("error no user passed\n"); page = 'l'; return;}
 
-	try{choice = Integer.parseInt(IO.input("~user settings~\n1. change password 2. change address \n press any key to go back\n"));}
+	try{choice = Integer.parseInt(IO.input("~user settings~\n1. change password 2. change address 3. add card\n press any key to go back\n"));}
 	catch (NumberFormatException e){return;}
 
 	switch(choice){
@@ -168,6 +169,10 @@ public class Main {
 		user.setPassword(IO.input("enter your old password"), IO.input("enter your new password"));
 	    case 2:
 		user.setAddress(IO.input("enter your password again"), IO.input("enter your new address"));
+	    case 3:
+		user.addCard(IO.input("enter your password again"));
+		IO.print("your id for this card is " + )
+
 	    default: return;
 
 	}
