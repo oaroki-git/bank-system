@@ -95,11 +95,15 @@ public class User extends Account {
     if (!loggedIn) {throw new Exception("Not logged in.");}
     return cards;
   }
+  public ArrayList<Integer> getIDs () throws Exception {
+    if (!loggedIn) {throw new Exception("Not logged in.");}
+    return cardIDs;
+  }
 
   //Public methods usable without loggedIn = true.
   public int login (String password) {
-    if (!verify(password)) {loggedIn = true; return 1;}
-    return 0;
+    if (!verify(password)) {return 1;}
+    loggedIn = true;return 0;
   } //Normal login.
   public int adminAccess (Admin admin) {
     if (!admin.getStatus()) {return 1;}
@@ -112,8 +116,4 @@ public class User extends Account {
   public String getUsername () {return username;}
   public String getAddress () {return address;}
   public boolean getStatus () {return loggedIn;}
-  public ArrayList<Integer> getIDs () {
-    ArrayList<Integer> ids = new ArrayList<>();
-    for (int id: cardIDs) {ids.add(id);} return ids;
-  }
 }
