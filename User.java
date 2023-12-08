@@ -8,6 +8,7 @@ public class User extends Account {
   private final String salt;
   private String passwordHash;
   private boolean loggedIn = false;
+  private boolean asUser = false; 
   private String address;
   private ArrayList<Card> cards = new ArrayList<Card>();
   private ArrayList<Integer> cardIDs = new ArrayList<Integer>();
@@ -59,17 +60,15 @@ public class User extends Account {
   } //constructor, only loggedIn admin can execute
 
   //Changing credentials
-  public int setPassword (String oldpassword, String newpassword) throws Exception {
+  public int setPassword (String newpassword) throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
-    if (!verify(oldpassword)) {return 1;} //Wrong password
+    if (!asUser) {return 1;}
     passwordHash = hashString(newpassword);
     return 0;
   } //Setting the password. Admin cannot change the password of any User.
-  public int setAddress (String password, String address) throws Exception {
+  public int setAddress (String address) throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
-    if (!verify(password)) {
-      return 1;
-    }
+    if (!asUser) {return 1;}
     this.address = address;
     return 0;
   } //address related stuff. Admin cannot change address of any User.
@@ -85,7 +84,7 @@ public class User extends Account {
   }
   public int addCard (String password) throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
-    if (!verify(password)) {return 1;}
+    if (!asUser) {return 1;}
     Card card = new Card(password);
     cards.add(search(card.getID()), card);
     cardIDs.add(card.getID());
@@ -103,7 +102,7 @@ public class User extends Account {
   //Public methods usable without loggedIn = true.
   public int login (String password) {
     if (!verify(password)) {return 1;}
-    loggedIn = true;return 0;
+    loggedIn = true; asUser = true;return 0;
   } //Normal login.
   public int adminAccess (Admin admin) {
     if (!admin.getStatus()) {return 1;}
@@ -111,7 +110,7 @@ public class User extends Account {
     return 0;
   } //Admin gets access to Card instances of Users.
   public int logout () {
-    loggedIn = false; return 0;
+    loggedIn = false; asUser = false; return 0;
   }
   public String getUsername () {return username;}
   public String getAddress () {return address;}
