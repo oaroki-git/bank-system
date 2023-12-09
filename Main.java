@@ -81,9 +81,9 @@ public class Main {
 	if(!(account instanceof Admin)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 
 	Admin manager = (Admin) account;
-	IO.print("logged in as manager " + manager.getUsername() + "\n");
+	IO.print("\nlogged in as manager " + manager.getUsername() + "\n");
 	
-	try{choice = Integer.parseInt(IO.input("~manager~\n1. view transactions 2. add account 3. change interest rate \npress any key to log out\n"));}
+	try{choice = Integer.parseInt(IO.input("\n1. view transactions 2. add account 3. change interest rate \npress any key to log out\n"));}
 	catch (NumberFormatException e){
 	    manager.logout();
 	    page = 'l';
@@ -91,22 +91,31 @@ public class Main {
 	}
 
 	switch(choice){
-	    case 1: return; //view transactions
+	    case 1: viewTransactions(manager); return;
 	    case 2: addAccountPage(manager); return;
 	    case 3: changeInterestPage(manager); return;
 	    default: manager.logout(); page = 'l'; return;
 	}
 	
     }
+    
+    public static void viewTransactions(Admin manager) throws Exception{
+	if(manager == null){IO.print("error no user passed\n"); return;}
 
+	ArrayList<Transanction> transactions = Card.getAllTransanctions(manager);
+	IO.print("time, card id, amount\n");
+	for(Transanction t : transactions){
+	    IO.print(t + "\n");
+	}
+    }
 
     public static void changeInterestPage(Admin manager) throws Exception{
-	if(manager == null){IO.print("error no user passed\n"); page = 'l'; return;}
+	if(manager == null){IO.print("error no user passed\n"); return;}
 	IO.print("this functionality does not exist yet\n");
     };
 
     public static void addAccountPage(Admin manager) throws Exception{
-	if(manager == null){IO.print("error no user passed\n"); page = 'l'; return;}
+	if(manager == null){IO.print("error no user passed\n"); return;}
 
 	try{choice = Integer.parseInt(IO.input("~add account~\n1. user 2. manager \npress any key to go back\n"));}
 	catch (NumberFormatException e){return;}
@@ -144,12 +153,12 @@ public class Main {
 	
 	User user = (User) account;
 	IO.print("logged in as user " + user.getUsername() + "\n");
-	if(user.getCards().size() == 0){IO.print("you currently don't have a bank card. add one in settings.\n")}
+	if(user.getCards().size() == 0){IO.print("\n!! you currently don't have a bank card. add one in settings. !!\n");}
 
 	Card card = null;
 	int amount = 0;
 
-	try{choice = Integer.parseInt(IO.input("~user~\n1. deposit 2. withdraw 3. settings\npress any key to log out\n"));}
+	try{choice = Integer.parseInt(IO.input("\n1. deposit 2. withdraw 3. settings\npress any key to log out\n"));}
 	catch (NumberFormatException e){
 	    user.logout();
 	    page = 'l';
@@ -157,7 +166,7 @@ public class Main {
 	}
 
 	switch(choice){
-	    case 1: deposit(user, amount, card) return;
+	    case 1: deposit(user, amount, card); return;
 	    case 2: withdraw(user, amount, card); return;
 	    case 3: userSettingsPage(user); return;
 	    default: user.logout(); page = 'l'; return;
@@ -194,7 +203,7 @@ public class Main {
 	if(account.getStatus()){IO.print("user logged in");}
 	else{IO.print("user logged out");}
 
-	if(user == null){IO.print("error no user passed\n"); page = 'l'; return;}
+	if(user == null){IO.print("error no user passed\n"); return;}
 
 	try{choice = Integer.parseInt(IO.input("~user settings~\n1. change password 2. change address 3. add card\n press any key to go back\n"));}
 	catch (NumberFormatException e){return;}
@@ -207,7 +216,7 @@ public class Main {
 	    case 3:
 		user.addCard(IO.input("enter your password again"));
 		ArrayList<Integer> ids = user.getIDs();
-		IO.print("your id for this card is " + ids.get(ids.size()-1));
+		IO.print("your id for this card is " + ids.get(ids.size()-1) + "\n");
 		return;
 
 	    default: return;
@@ -227,8 +236,8 @@ public class Main {
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
-	catch (NumberFormatException e){IO.print("invalid option"); return null; }
+	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{return cards.get(choice-1);}
-	catch (IndexOutOfBoundsException e){IO.print("invalid option"); return null;}
+	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
     }
 }
