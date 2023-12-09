@@ -227,7 +227,7 @@ public class Main {
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
-	catch (NumberFormatException e){IO.print("invalid option"); return null; );}
+	catch (NumberFormatException e){IO.print("invalid option"); return null; }
 	try{return cards.get(choice-1);}
 	catch (IndexOutOfBoundsException e){IO.print("invalid option"); return null;}
     }
