@@ -54,7 +54,7 @@ public class Main {
     public static void loginPage()throws Exception{
 	try{choice = Integer.parseInt(IO.input("select login \n1. manager   2. user\n"));} 
 	catch (NumberFormatException e){
-	    IO.print("invalid choice");
+	    IO.print("invalid choice\n");
 	    page = 'l';
 	    return;
 	}
@@ -83,7 +83,7 @@ public class Main {
 	Admin manager = (Admin) account;
 	IO.print("\nlogged in as manager " + manager.getUsername() + "\n");
 	
-	try{choice = Integer.parseInt(IO.input("\n1. view transactions 2. add account 3. change interest rate \npress any key to log out\n"));}
+	try{choice = Integer.parseInt(IO.input("\n~actions~\n1. view transactions 2. add account 3. change interest rate \npress any key to log out\n"));}
 	catch (NumberFormatException e){
 	    manager.logout();
 	    page = 'l';
@@ -101,9 +101,9 @@ public class Main {
     
     public static void viewTransactions(Admin manager) throws Exception{
 	if(manager == null){IO.print("error no user passed\n"); return;}
-
 	ArrayList<Transanction> transactions = Card.getAllTransanctions(manager);
-	IO.print("time, card id, amount\n");
+	IO.print("~transactions~");
+	IO.print("time | card id | amount\n");
 	for(Transanction t : transactions){
 	    IO.print(t + "\n");
 	}
@@ -158,7 +158,7 @@ public class Main {
 	Card card = null;
 	int amount = 0;
 
-	try{choice = Integer.parseInt(IO.input("\n1. deposit 2. withdraw 3. view transaction history 4. settings\npress any key to log out\n"));}
+	try{choice = Integer.parseInt(IO.input("\n~actions~\n1. deposit 2. withdraw 3. view transaction history 4. settings\npress any key to log out\n"));}
 	catch (NumberFormatException e){
 	    user.logout();
 	    page = 'l';
