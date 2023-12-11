@@ -1,11 +1,11 @@
 package bank.user;
-//import bank.user.Account;
-import bank.user.*;
-import bank.IO;
+import bank.user.Account;
+//import bank.user.*;
+//import bank.IO;
 import java.util.ArrayList;
 
 public class Collection {	
-  public ArrayList<Account> accounts = new ArrayList<>();	
+  private ArrayList<Account> accounts = new ArrayList<>();	
 
   private int search(String username) {
     if (accounts.size()==0) {return 0;}
@@ -36,17 +36,17 @@ public class Collection {
     accounts.add(search(acc.getUsername()), acc);
   }
 
-  public static void main (String[] args) throws Exception {
-    Collection accounts = new Collection();
-    accounts.add(new Admin("root", "root"));
-    Account acc = accounts.get("root"); 
-    acc.login("root");
-    IO.print(acc.toString());
-    accounts.add(new User("user", "password", "addr", (Admin)acc));
-    acc = accounts.get("user");
-    IO.print(acc.toString());
-    IO.print(accounts.accounts.toString());
-    acc = accounts.get("root");
-    IO.print(acc.toString());
-  }
+//public static void main (String[] args) throws Exception {
+//  Collection accounts = new Collection();
+//  accounts.add(new Admin("root", "root"));
+//  Account acc = accounts.get("root");
+//  acc.login("root");
+//  IO.print(acc.toString());
+//  accounts.add(new User("user", "password", "addr", (Admin)acc));
+//  acc = accounts.get("user");
+//  IO.print(acc.toString());
+//  IO.print(accounts.accounts.toString());
+//  acc = accounts.get("root");
+//  IO.print(acc.toString());
+//}
 }
