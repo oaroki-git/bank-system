@@ -1,5 +1,6 @@
 package bank.user;
 import bank.user.Transanction;
+import bank.user.Admin;
 import bank.security.Hashes;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class Card {
   private String salt;
   private ArrayList<Transanction> transanctions;
   private boolean loggedIn = false;
+  private double nir = 0.02; //default nominal interest rate
 
   private String hashString (String in) {
     return Hashes.sha256(in+salt);
@@ -67,6 +69,18 @@ public class Card {
   public static ArrayList<Transanction> getAllTransanctions throws Exception (Admin admin) {
     if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
     return rootTransanctions;
+  }
+
+  public double getInterestRate () {return nir;}
+  public void setInterestRate (double rate, Admin admin) throws Exception {
+    if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
+    nir = rate;}
+  public void applyInterest (Admin admin) throws Exception {
+    if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
+    double amount = balance * nir;
+    balance += amount;
+    transanctions.add(new Transanction(amount, id));
+    rootTransanctions.add(new Transanction(amount, id));
   }
 
   public int login (String password) {
