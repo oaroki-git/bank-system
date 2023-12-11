@@ -158,7 +158,7 @@ public class Main {
 	Card card = null;
 	int amount = 0;
 
-	try{choice = Integer.parseInt(IO.input("\n1. deposit 2. withdraw 3. settings\npress any key to log out\n"));}
+	try{choice = Integer.parseInt(IO.input("\n1. deposit 2. withdraw 3. view transaction history 4. settings\npress any key to log out\n"));}
 	catch (NumberFormatException e){
 	    user.logout();
 	    page = 'l';
@@ -168,10 +168,22 @@ public class Main {
 	switch(choice){
 	    case 1: deposit(user, amount, card); return;
 	    case 2: withdraw(user, amount, card); return;
-	    case 3: userSettingsPage(user); return;
+	    case 3: viewTransactions(user); return;
+	    case 4: userSettingsPage(user); return;
 	    default: user.logout(); page = 'l'; return;
 	}
     }
+
+     public static void viewTransactions(User user) throws Exception{
+	    if(user == null){IO.print("error no user passed\n"); return;}
+
+	    Card card = chooseCard(user);
+	    ArrayList<Transanction> transactions = card.getTransanctions();
+	    IO.print("time, card id, amount\n");
+	    for(Transanction t : transactions){
+		IO.print(t + "\n");
+	    }
+	}
 
 
     public static void deposit(User user, int amount, Card card)throws Exception{
@@ -226,6 +238,8 @@ public class Main {
 
 
     public static Card chooseCard(User user)throws Exception{
+	if(user.getCards().size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n");}
+
 	IO.print("choose card to use below: \n");
 	ArrayList<Card> cards = user.getCards();
 	int i = 1;
