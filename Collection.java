@@ -9,7 +9,7 @@ public class Collection {
 
   private int search(String username) {
     if (accounts.size()==0) {return 0;}
-    if (username.compareTo(accounts.get(0).getUsername()) <0){return 0;}
+    if (username.compareTo(accounts.get(0).getUsername()) <=0){return 0;}
     //if (accounts.get(accounts.size()-1).getUsername<=username) {return accounts.size();} //handy but excessive
     int L = 0;
     int R = accounts.size();
