@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
 	
 	create("admin", "password");
-	IO.print("welcome to your definetly safe and real neighbour bank\n");
+	IO.print("welcome to your definitely safe and real neighbour bank\n");
     	
 	while (proceed) {
 	    switch(page){
@@ -41,10 +41,12 @@ public class Main {
    //login to account
     public static Account get(String username)throws Exception{
 	Account acc = accounts.get(username);
-	if (acc==null) {
-	throw new Exception("invalid username");}
-	return acc;} //get account and pass to login
-    public static int login(Account account, String password)throws Exception{return account.login(password);}
+	return acc;
+	} //get account and pass to login
+    public static int login(Account account, String password)throws Exception{
+	if (account==null) {throw new Exception("invalid username");}
+	return account.login(password);
+    }
 
     
     //interfaces ---------------------------------------------------------------------------------
@@ -63,7 +65,7 @@ public class Main {
 	    str = IO.input("enter username and password (separated by commas)\n");
 	    split = str.split(",");
 	    try{account = get(split[0]);}
-	    catch (Exception e){IO.print("invalid username or password\n"); page = 'l'; return;}
+	    catch (Exception e){System.out.println(e);}//IO.print("index out of bounds");}IO.print("invalid username or password\n"); page = 'l'; return;}
 	    if (login(account, split[1]) == 1){IO.print("invalid username or password\n"); page = 'l'; return;}
 
 	    switch(choice){
@@ -111,7 +113,22 @@ public class Main {
 
     public static void changeInterestPage(Admin manager) throws Exception{
 	if(manager == null){IO.print("error no user passed\n"); return;}
-	IO.print("this functionality does not exist yet\n");
+	
+	for(Account account : accounts){
+	    if(account instanceof User){IO.print((User) account.getUsername() + "\n");}
+	}
+
+	User user = null;
+	Card card = null;
+	try{user = get(IO.input("enter the username of the account you want to access: "););
+	    user.adminAccess(manager);}
+	catch (Exception e){IO.print("please enter a valid username\n"); return;}
+
+	try{card = chooseCards(user);
+	    card.setInterestRate(IO.input("enter the value of new interest: "), manager);
+	    IO.print("the interest rate is now " + card.getInterestRate());
+	}
+	catch (Exception e){IO.print("please make sure you entered valid values\n"); return;}
     };
 
     public static void addAccountPage(Admin manager) throws Exception{
@@ -122,7 +139,7 @@ public class Main {
 
 	switch(choice){
 	    case 1:
-		str = IO.input("enter username, password and adress of new user (separated by commas)\n");
+		str = IO.input("enter username, password and address of new user (separated by commas)\n");
 		split = str.split(",");
 		try{ create(split[0], split[1], manager, split[2]);}
 		catch (Exception e){
@@ -195,8 +212,8 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.deposit(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
-	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance());
+	if(!(card.deposit(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid\n");};
+	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance() + "\n");
     }
 
     public static void withdraw(User user, int amount, Card card)throws Exception{
@@ -208,7 +225,7 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 	if(!(card.withdraw(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
-	IO.print("your balance was $" + (card.getBalance() + amount) + "and is now $" + card.getBalance());  
+	IO.print("your balance was $" + (card.getBalance() + amount) + "and is now $" + card.getBalance() + "\n");  
     }
 
     public static void userSettingsPage(User user)throws Exception{
@@ -222,11 +239,11 @@ public class Main {
 
 	switch(choice){
 	    case 1: 
-		user.setPassword(IO.input("enter your old password"), IO.input("enter your new password")); return;
+		user.setPassword(IO.input("enter your old password "), IO.input("enter your new password ")); return;
 	    case 2:
-		user.setAddress(IO.input("enter your password again"), IO.input("enter your new address")); return;
+		user.setAddress(IO.input("enter your password again "), IO.input("enter your new address ")); return;
 	    case 3:
-		user.addCard(IO.input("enter your password again"));
+		user.addCard(IO.input("enter your password again "));
 		ArrayList<Integer> ids = user.getIDs();
 		IO.print("your id for this card is " + ids.get(ids.size()-1) + "\n");
 		return;
@@ -238,13 +255,13 @@ public class Main {
 
 
     public static Card chooseCard(User user)throws Exception{
-	if(user.getCards().size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n");}
+	if(user.getCards().size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n"); return null;}
 
 	IO.print("choose card to use below: \n");
 	ArrayList<Card> cards = user.getCards();
 	int i = 1;
 
-	IO.print("No. | ID	    | balance\n");
+	IO.print("card number, ID, balance\n");
 	for(Card card : cards){
 	    IO.print(i + ". | " + card.getID() + " | " + card.getBalance() +"\n");
 	    i += 1;
