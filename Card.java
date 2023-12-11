@@ -13,6 +13,7 @@ public class Card {
   private String passwordHash;
   private String salt;
   private ArrayList<Transanction> transanctions;
+  private boolean loggedIn = false;
 
   private String hashString (String in) {
     return Hashes.sha256(in+salt);
@@ -45,16 +46,16 @@ public class Card {
   
   public int getID () {return id;}
   public double getBalance () {return balance;}
-  public int deposit (double amount, String password) {
-    if (!verify(password)) {return 1;}
+  public int deposit (double amount) {
+    if (!loggedIn) {return 1;}
     if (amount <= 0) {return -1;} //error: user is wasting CPU time.
     balance += amount;
     transanctions.add(new Transanction(amount, id));
     rootTransanctions.add(new Transanction(amount, id));
     return 0;
   }
-  public int withdraw (double amount, String password) {
-    if (!verify(password)) {return 1;}
+  public int withdraw (double amount) {
+    if (!loggedIn) {return 1;}
     if (amount > balance) {return -1;} //error: user going into debt.
     balance -= amount;
     transanctions.add(new Transanction(-amount, id));
@@ -67,4 +68,10 @@ public class Card {
     if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
     return rootTransanctions;
   }
+
+  public int login (String password) {
+    if (!verify(password)) {return 1;}
+    loggedIn = true; return 0;
+  }
+  public int logout () {loggedIn = false; return 0;}
 }

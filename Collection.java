@@ -5,12 +5,11 @@ import bank.IO;
 import java.util.ArrayList;
 
 public class Collection {	
-  ArrayList<Account> accounts = new ArrayList<>();	
+  public ArrayList<Account> accounts = new ArrayList<>();	
 
   private int search(String username) {
     if (accounts.size()==0) {return 0;}
-    if (username.compareTo(accounts.get(0).getUsername()) <0){return 0;}
-    //if (accounts.get(accounts.size()-1).getUsername<=username) {return accounts.size();} //handy but excessive
+    if (username.compareTo(accounts.get(0).getUsername()) <=0){return 0;}
     int L = 0;
     int R = accounts.size();
     int pointer = -1;
@@ -40,11 +39,14 @@ public class Collection {
   public static void main (String[] args) throws Exception {
     Collection accounts = new Collection();
     accounts.add(new Admin("root", "root"));
-    Account acc = accounts.get("root");
+    Account acc = accounts.get("root"); 
     acc.login("root");
     IO.print(acc.toString());
     accounts.add(new User("user", "password", "addr", (Admin)acc));
     acc = accounts.get("user");
+    IO.print(acc.toString());
+    IO.print(accounts.accounts.toString());
+    acc = accounts.get("root");
     IO.print(acc.toString());
   }
 }
