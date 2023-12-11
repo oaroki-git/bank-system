@@ -66,7 +66,7 @@ public class Card {
   }
 
   public ArrayList<Transanction> getTransanctions () {return transanctions;}
-  public static ArrayList<Transanction> getAllTransanctions throws Exception (Admin admin) {
+  public static ArrayList<Transanction> getAllTransanctions (Admin admin) throws Exception {
     if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
     return rootTransanctions;
   }
