@@ -212,7 +212,7 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.deposit(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid\n");};
+	if(!(card.deposit(amount)) == 0)){IO.print("please make sure the amount and password are valid\n");};
 	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance() + "\n");
     }
 
@@ -224,7 +224,7 @@ public class Main {
 
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
-	if(!(card.withdraw(amount, IO.input("enter your password again\n")) == 0)){IO.print("please make sure the amount and password are valid");};
+	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid");};
 	IO.print("your balance was $" + (card.getBalance() + amount) + "and is now $" + card.getBalance() + "\n");  
     }
 
@@ -268,7 +268,11 @@ public class Main {
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
-	try{return cards.get(choice-1);}
+	try{
+	    Card card = cards.get(choice-1);
+	    card.login(IO.print("enter your password again: "));
+	    return card;
+	}
 	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
     }
 }
