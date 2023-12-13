@@ -59,7 +59,7 @@ public static void main (String[] args) {
   String str = input("Tell me what are you doing!\n");
   print("You are "+str+"\n");
   print("highlight","red","hello");
-  print("bold","blue","world");
+  print("bold","blue","world\n");
   print("ahsdf");
   print("purple","purple");
 }
@@ -68,45 +68,44 @@ public static void main (String[] args) {
 public static void print (String formatType, String color, String str) {
   //this method overloads print, if a formatType and color is mentioned, content will be printed and formatted with a specific color
   if (formatType.equals("bold")) { //checks formatType
-    if (color.equals("black")) {System.out.println(BLACK_BOLD+str+RESET);} //checks color
-    if (color.equals("red")) {System.out.println(RED_BOLD+str+RESET);}
-    if (color.equals("green")) {System.out.println(GREEN_BOLD+str+RESET);}
-    if (color.equals("yellow")) {System.out.println(YELLOW_BOLD+str+RESET);}
-    if (color.equals("blue")) {System.out.println(BLUE_BOLD+str+RESET);}
-    if (color.equals("purple")) {System.out.println(PURPLE_BOLD+str+RESET);}
-    if (color.equals("cyan")) {System.out.println(CYAN_BOLD+str+RESET);}
-    if (color.equals("white")) {System.out.println(WHITE_BOLD+str+RESET);}
+    if (color.equals("black")) {System.out.print(BLACK_BOLD+str+RESET);} //checks color
+    if (color.equals("red")) {System.out.print(RED_BOLD+str+RESET);}
+    if (color.equals("green")) {System.out.print(GREEN_BOLD+str+RESET);}
+    if (color.equals("yellow")) {System.out.print(YELLOW_BOLD+str+RESET);}
+    if (color.equals("blue")) {System.out.print(BLUE_BOLD+str+RESET);}
+    if (color.equals("purple")) {System.out.print(PURPLE_BOLD+str+RESET);}
+    if (color.equals("cyan")) {System.out.print(CYAN_BOLD+str+RESET);}
+    if (color.equals("white")) {System.out.print(WHITE_BOLD+str+RESET);}
   }
   if (formatType.equals("underline")) {
-    if (color.equals("black")) {System.out.println(BLACK_UNDERLINED+str+RESET);}
-    if (color.equals("red")) {System.out.println(RED_UNDERLINED+str+RESET);}
-    if (color.equals("green")) {System.out.println(GREEN_UNDERLINED+str+RESET);}
-    if (color.equals("yellow")) {System.out.println(YELLOW_UNDERLINED+str+RESET);}
-    if (color.equals("blue")) {System.out.println(BLUE_UNDERLINED+str+RESET);}
-    if (color.equals("purple")) {System.out.println(PURPLE_UNDERLINED+str+RESET);}
-    if (color.equals("cyan")) {System.out.println(CYAN_UNDERLINED+str+RESET);}
-    if (color.equals("white")) {System.out.println(WHITE_UNDERLINED+str+RESET);}
+    if (color.equals("black")) {System.out.print(BLACK_UNDERLINED+str+RESET);}
+    if (color.equals("red")) {System.out.print(RED_UNDERLINED+str+RESET);}
+    if (color.equals("green")) {System.out.print(GREEN_UNDERLINED+str+RESET);}
+    if (color.equals("yellow")) {System.out.print(YELLOW_UNDERLINED+str+RESET);}
+    if (color.equals("blue")) {System.out.print(BLUE_UNDERLINED+str+RESET);}
+    if (color.equals("purple")) {System.out.print(PURPLE_UNDERLINED+str+RESET);}
+    if (color.equals("cyan")) {System.out.print(CYAN_UNDERLINED+str+RESET);}
+    if (color.equals("white")) {System.out.print(WHITE_UNDERLINED+str+RESET);}
   }
   if (formatType.equals("highlight")) {
-    if (color.equals("black")) {System.out.println(BLACK_BACKGROUND+str+RESET);}
-    if (color.equals("red")) {System.out.println(RED_BACKGROUND+str+RESET);}
-    if (color.equals("green")) {System.out.println(GREEN_BACKGROUND+str+RESET);}
-    if (color.equals("yellow")) {System.out.println(YELLOW_BACKGROUND+str+RESET);}
-    if (color.equals("blue")) {System.out.println(BLUE_BACKGROUND+str+RESET);}
-    if (color.equals("purple")) {System.out.println(PURPLE_BACKGROUND+str+RESET);}
-    if (color.equals("cyan")) {System.out.println(CYAN_BACKGROUND+str+RESET);}
-    if (color.equals("white")) {System.out.println(WHITE_BACKGROUND+str+RESET);}
+    if (color.equals("black")) {System.out.print(BLACK_BACKGROUND+str+RESET);}
+    if (color.equals("red")) {System.out.print(RED_BACKGROUND+str+RESET);}
+    if (color.equals("green")) {System.out.print(GREEN_BACKGROUND+str+RESET);}
+    if (color.equals("yellow")) {System.out.print(YELLOW_BACKGROUND+str+RESET);}
+    if (color.equals("blue")) {System.out.print(BLUE_BACKGROUND+str+RESET);}
+    if (color.equals("purple")) {System.out.print(PURPLE_BACKGROUND+str+RESET);}
+    if (color.equals("cyan")) {System.out.print(CYAN_BACKGROUND+str+RESET);}
+    if (color.equals("white")) {System.out.print(WHITE_BACKGROUND+str+RESET);}
   }
 }
 public static void print (String color, String str) {
-    if (color.equals("black")) {System.out.println(BLACK+str+RESET);}
-    if (color.equals("red")) {System.out.println(RED+str+RESET);}
-    if (color.equals("green")) {System.out.println(GREEN+str+RESET);}
-    if (color.equals("yellow")) {System.out.println(YELLOW+str+RESET);}
-    if (color.equals("blue")) {System.out.println(BLUE+str+RESET);}
-    if (color.equals("purple")) {System.out.println(PURPLE+str+RESET);}
-    if (color.equals("cyan")) {System.out.println(CYAN+str+RESET);}
-    if (color.equals("white")) {System.out.println(WHITE+str+RESET);}
-    else {System.out.println(str);}
+    if (color.equals("black")) {System.out.print(BLACK+str+RESET);}
+    if (color.equals("red")) {System.out.print(RED+str+RESET);}
+    if (color.equals("green")) {System.out.print(GREEN+str+RESET);}
+    if (color.equals("yellow")) {System.out.print(YELLOW+str+RESET);}
+    if (color.equals("blue")) {System.out.print(BLUE+str+RESET);}
+    if (color.equals("purple")) {System.out.print(PURPLE+str+RESET);}
+    if (color.equals("cyan")) {System.out.print(CYAN+str+RESET);}
+    if (color.equals("white")) {System.out.print(WHITE+str+RESET);}
 }
 }
