@@ -115,17 +115,17 @@ public class Main {
 	if(manager == null){IO.print("error no user passed\n"); return;}
 	
 	for(Account account : accounts){
-	    if(account instanceof User){IO.print((User) account.getUsername() + "\n");}
+	    if(account instanceof User){IO.print(account.getUsername() + "\n");}
 	}
 
 	User user = null;
 	Card card = null;
-	try{user = get(IO.input("enter the username of the account you want to access: "));
+	try{user = (User) get(IO.input("enter the username of the account you want to access: "));
 	    user.adminAccess(manager);}
 	catch (Exception e){IO.print("please enter a valid username\n"); return;}
 
-	try{card = chooseCards(user);
-	    card.setInterestRate(IO.input("enter the value of new interest: "), manager);
+	try{card = chooseCard(user);
+	    card.setInterestRate(Double.parseDouble(IO.input("enter the value of new interest: ")), manager);
 	    IO.print("the interest rate is now " + card.getInterestRate());
 	}
 	catch (Exception e){IO.print("please make sure you entered valid values\n"); return;}
@@ -212,7 +212,7 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.deposit(amount)) == 0)){IO.print("please make sure the amount and password are valid\n");}
+	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n");}
 	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance() + "\n");
     }
 
@@ -239,9 +239,9 @@ public class Main {
 
 	switch(choice){
 	    case 1: 
-		user.setPassword(IO.input("enter your old password "), IO.input("enter your new password ")); return;
+		user.setPassword(IO.input("enter your new password ")); return;
 	    case 2:
-		user.setAddress(IO.input("enter your password again "), IO.input("enter your new address ")); return;
+		user.setAddress(IO.input("enter your new address ")); return;
 	    case 3:
 		user.addCard(IO.input("enter your password again "));
 		ArrayList<Integer> ids = user.getIDs();
@@ -270,7 +270,7 @@ public class Main {
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
 	    Card card = cards.get(choice-1);
-	    card.login(IO.print("enter your password again: "));
+	    card.login(IO.input("enter your password again: "));
 	    return card;
 	}
 	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
