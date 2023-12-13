@@ -1,5 +1,6 @@
 package bank.user;
 import bank.user.Account;
+import bank.user.Admin;
 import bank.security.Hashes;
 import java.util.ArrayList;
 
@@ -12,6 +13,9 @@ public class User extends Account {
   private String address;
   private ArrayList<Card> cards = new ArrayList<Card>();
   private ArrayList<Integer> cardIDs = new ArrayList<Integer>();
+
+  private static ArrayList<Card> allCards = new ArrayList<Card>();
+  private static ArrayList<String[]> allCardIDs = new ArrayList<String[]>();
 
   //client-inaccessible methods
     //password-related
@@ -26,7 +30,6 @@ public class User extends Account {
   private int search (int id) {
     if (cards.size()==0) {return 0;}
     if (cards.get(0).getID()>=id) {return 0;}
-    //if (cards.get(cards.size()-1).getID()<=id) {return cards.size();} //not necessary, but handy nonetheless.
     int L = 0;
     int R = cards.size();
     int pointer = -1;
@@ -39,6 +42,21 @@ public class User extends Account {
       if (currentID > id) {R = pointer;continue;}
     } while ((R-L)!=1); return R;
   } //binary search for Card with closest id to the input, returns index.
+  private static int globalSearch (int id) {
+    if (allCards.size()==0) {return 0;}
+    if (allCards.get(0).getID()>=id) {return 0;}
+    int L = 0;
+    int R = allCards.size();
+    int pointer = -1;
+    int currentID = -1;
+    do {
+      pointer = L+(R-L)/2;
+      currentID = allCards.get(pointer).getID();
+      if (currentID == id) {return pointer;}
+      if (currentID < id) {L = pointer;continue;}
+      if (currentID > id) {R = pointer;continue;}
+    } while ((R-L)!=1); return R;
+  }
   /*
   private void insert (int idx, Card card) {
     cards.add(null);
@@ -86,18 +104,35 @@ public class User extends Account {
     if (!loggedIn) {throw new Exception("Not logged in.");}
     if (!asUser) {return 1;}
     Card card = new Card(password);
-    cards.add(search(card.getID()), card);
-    cardIDs.add(card.getID());
+    int idx = search(card.getID());
+    cards.add(idx, card);
+    allCards.add(idx, card);
+    idx = globalSearch(card.getID());
+    cardIDs.add(idx, card.getID());
+    String[] pair = {this.getUsername(), ""+card.getID()};
+    allCardIDs.add(idx, pair);
     return 0;
   } //Admin cannot add card to any User.
-  public ArrayList<Card> getCards () throws Exception {
-    if (!loggedIn) {throw new Exception("Not logged in.");}
-    return cards;
-  }
+//public ArrayList<Card> getCards () throws Exception {
+//  if (!loggedIn) {throw new Exception("Not logged in.");}
+//  return cards;
+//}
   public ArrayList<Integer> getIDs () throws Exception {
     if (!loggedIn) {throw new Exception("Not logged in.");}
     return cardIDs;
   }
+  public static ArrayList<String[]> getAllIDs (Admin admin) throws Exception {
+    if (!admin.getStatus()) {throw new Exception("Provided admin not logged in.");}
+    return allCardIDs;
+  }
+  public static Card getCardGlobal (int id, Admin admin) throws Exception {
+    if (!admin.getStatus()) {throw new Exception("Provided admin not logged in.");}
+    int idx = globalSearch(id);
+    if (idx==(allCards.size())) {return null;}
+    Card card = allCards.get(idx);
+    if (card.getID()==id) {return card;}
+    return null; //no such instance
+  } 
 
   //Public methods usable without loggedIn = true.
   public int login (String password) {
