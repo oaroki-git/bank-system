@@ -114,10 +114,6 @@ public class Main {
     public static void changeInterestPage(Admin manager) throws Exception{
 	if(manager == null){IO.print("error no user passed\n"); return;}
 	
-	for(Account account : accounts){
-	    if(account instanceof User){IO.print(account.getUsername() + "\n");}
-	}
-
 	User user = null;
 	Card card = null;
 	try{user = (User) get(IO.input("enter the username of the account you want to access: "));
@@ -258,12 +254,13 @@ public class Main {
 	if(user.getCards().size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n"); return null;}
 
 	IO.print("choose card to use below: \n");
-	ArrayList<Card> cards = user.getCards();
+	ArrayList<Integer> ids = user.getIDs();
 	int i = 1;
 
 	IO.print("card number, ID, balance\n");
-	for(Card card : cards){
-	    IO.print(i + ". | " + card.getID() + " | " + card.getBalance() +"\n");
+	for(int id : ids){
+	    Card card = user.getCard(id);
+	    IO.print(i + ". | " + id + " | " + card.getBalance() +"\n");
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
