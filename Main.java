@@ -266,7 +266,7 @@ public class Main {
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
-	    Card card = cards.get(choice-1);
+	    Card card = ids.get(choice-1);
 	    card.login(IO.input("enter your password again: "));
 	    return card;
 	}
