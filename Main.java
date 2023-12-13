@@ -120,7 +120,7 @@ public class Main {
 
 	User user = null;
 	Card card = null;
-	try{user = get(IO.input("enter the username of the account you want to access: "););
+	try{user = get(IO.input("enter the username of the account you want to access: "));
 	    user.adminAccess(manager);}
 	catch (Exception e){IO.print("please enter a valid username\n"); return;}
 
@@ -212,7 +212,7 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.deposit(amount)) == 0)){IO.print("please make sure the amount and password are valid\n");};
+	if(!(card.deposit(amount)) == 0)){IO.print("please make sure the amount and password are valid\n");}
 	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance() + "\n");
     }
 
