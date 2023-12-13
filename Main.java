@@ -255,18 +255,20 @@ public class Main {
 
 	IO.print("choose card to use below: \n");
 	ArrayList<Integer> ids = user.getIDs();
+	ArrayList<Card> cardsCopy = new ArrayList<Cards>();
 	int i = 1;
 
 	IO.print("card number, ID, balance\n");
 	for(int id : ids){
 	    Card card = user.getCard(id);
+	    cardsCopy.add(card);
 	    IO.print(i + ". | " + id + " | " + card.getBalance() +"\n");
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
-	    Card card = ids.get(choice-1);
+	    Card card = ids.getCard(cardscopy.get(choice-1).getID());
 	    card.login(IO.input("enter your password again: "));
 	    return card;
 	}
