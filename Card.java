@@ -58,7 +58,7 @@ public class Card {
   }
   public int withdraw (double amount) {
     if (!loggedIn) {return 1;}
-    if (amount > balance || amount <= 0) {return -1;} //error: user does not have sufficient brain cells
+    if (amount > balance) {return -1;} //error: user going into debt.
     balance -= amount;
     transanctions.add(new Transanction(-amount, id));
     rootTransanctions.add(new Transanction(-amount, id));
@@ -71,6 +71,7 @@ public class Card {
     return rootTransanctions;
   }
 
+//stuff written by alan
   public double getInterestRate () {return nir;}
   public void setInterestRate (double rate, Admin admin) throws Exception {
     if (!admin.getStatus()) {throw new Exception("provided admin not logged in.");}
@@ -84,7 +85,7 @@ public class Card {
   }
 
   public int login (String password) {
-    if (!verify(password)) {loggedIn = false; return 1;}
+    if (!verify(password)) {return 1;}
     loggedIn = true; return 0;
   }
   public int logout () {loggedIn = false; return 0;}
