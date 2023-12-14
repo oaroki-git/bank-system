@@ -166,7 +166,7 @@ public class Main {
 	
 	User user = (User) account;
 	IO.print("logged in as user " + user.getUsername() + "\n");
-	if(user.getCards().size() == 0){IO.print("\n!! you currently don't have a bank card. add one in settings. !!\n");}
+	if(user.getIDs().size() == 0){IO.print("\n!! you currently don't have a bank card. add one in settings. !!\n");}
 
 	Card card = null;
 	int amount = 0;
@@ -200,7 +200,7 @@ public class Main {
 
 
     public static void deposit(User user, int amount, Card card)throws Exception{
-	if(user.getCards().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
+	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
 
 	card = chooseCard(user);
 	if(card == null){IO.print("invalid card."); return;}
@@ -255,7 +255,7 @@ public class Main {
 
 	IO.print("choose card to use below: \n");
 	ArrayList<Integer> ids = user.getIDs();
-	ArrayList<Card> cardsCopy = new ArrayList<Cards>();
+	ArrayList<Card> cardsCopy = new ArrayList<Card>();
 	int i = 1;
 
 	IO.print("card number, ID, balance\n");
