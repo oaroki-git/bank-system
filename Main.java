@@ -201,7 +201,7 @@ public class Main {
 	}
 
 
-    public static void deposit(User user, int amount, Card card)throws Exception{
+    public static void deposit(User user, double amount, Card card)throws Exception{
 	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n\n"); return;}
 
 	card = chooseCard(user);
@@ -214,7 +214,7 @@ public class Main {
 	IO.print("your balance was $" + (card.getBalance() - amount) + " and is now $" + card.getBalance() + "\n");
     }
 
-    public static void withdraw(User user, int amount, Card card)throws Exception{
+    public static void withdraw(User user, double amount, Card card)throws Exception{
 	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n\n"); return;}
 	    
 	card = chooseCard(user);
