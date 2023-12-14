@@ -207,8 +207,8 @@ public class Main {
 	card = chooseCard(user);
 	if(card == null){IO.print("invalid card. \nplease verify that a valid card was chosen and a valid password input.\n\n"); return;}
 
-	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
-	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
+	try{amount = Double.parseDouble(IO.input("enter the amount you want to deposit:\n"));}
+	catch (NumberFormatException e){IO.print("please enter a valid amount\n"); return;}
 
 	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n\n"); return;}
 	IO.print("your balance was $" + (card.getBalance() - amount) + " and is now $" + card.getBalance() + "\n");
@@ -220,8 +220,8 @@ public class Main {
 	card = chooseCard(user);
 	if(card ==null){IO.print("invalid card."); return;}
 
-	try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
-	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
+	try{amount = Double.parseDouble(IO.input("enter the amount you want to withdraw:\n"));}
+	catch (NumberFormatException e){IO.print("please enter a valid amount\n"); return;}
 
 	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid\n\n"); return;};
 	IO.print("your balance was $" + (card.getBalance() + amount) + " and is now $" + card.getBalance() + "\n");  
