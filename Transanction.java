@@ -17,7 +17,7 @@ public class Transanction {
   public LocalDateTime getTime () {return time;}
   public int getID () {return id;}
   public String toString () {
-    return time.format(formatter) + " | " + id + " | " + amount;
+    return time.format(formatter) + " | " + id + " | " + String.format("%.2f",amount);
   }
 
   public static void main (String[] args) {
