@@ -121,9 +121,9 @@ public class Main {
 	catch(NumberFormatException e){IO.print("please enter a valid choice.\n"); return;}
 
 	switch(choice){
-	    case 1: card.applyInterest(manager); IO.print("the amount is now $" + card.getBalance() + ". \n"); return;
-	    case 2: card.setInterestRate(((double)(Integer.parseInt(IO.input("enter the new interest rate for this card (enter the percentage without the sign): "))))/100, manager);
-		    IO.print("the interest rate is now " + card.getInterestRate()*100 + "%.\n");
+	    case 1: card.applyInterest(manager); return;
+	    case 2: card.setInterestRate(((double)(Integer.parseInt(IO.input("enter the new interest rate for this card(must be a double): "))))/100, manager);
+		    IO.print("the interest rate is now" + card.getInterestRate()*100 + "%.\n");
 		    return;
 	    default: return;
 	}
@@ -211,7 +211,7 @@ public class Main {
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n"); return;}
 
 	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n\n"); return;}
-	IO.print("your balance was $" + (card.getBalance() - amount) + " and is now $" + card.getBalance() + "\n");
+	System.out.printf("your balance was $%.2f and is now $%.2f \n", ((card.getBalance() - amount)), (card.getBalance()));
     }
 
     public static void withdraw(User user, double amount, Card card)throws Exception{
@@ -224,7 +224,7 @@ public class Main {
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n"); return;}
 
 	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid\n\n"); return;};
-	IO.print("your balance was $" + (card.getBalance() + amount) + " and is now $" + card.getBalance() + "\n");  
+	System.out.printf("your balance was $%.2f and is now $%.2f \n", ((card.getBalance() - amount)), (card.getBalance())); 
     }
 
     public static void userSettingsPage(User user)throws Exception{
@@ -265,7 +265,8 @@ public class Main {
 	IO.print("card number, ID, balance\n");
 	for(int id : ids){
 	    card = user.getCard(id);
-	    IO.print(i + ". | " + id + " | " + card.getBalance() +"\n");
+	    IO.print(i + ". | " + id + " | ");
+	    System.out.printf("$%.2f\n",(card.getBalance())); 
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
