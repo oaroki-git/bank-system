@@ -122,7 +122,7 @@ public class Main {
 
 	switch(choice){
 	    case 1: card.applyInterest(manager); return;
-	    case 2: card.setInterestRate(((double)(Integer.parseInt(IO.input("enter the new interest rate for this card(must be a double): "))))/100, manager);
+	    case 2: card.setInterestRate(((double)(Integer.parseInt(IO.input("enter the new interest rate for this card (enter the percentage without the sign): "))))/100, manager);
 		    IO.print("the interest rate is now" + card.getInterestRate()*100 + "%.\n");
 		    return;
 	    default: return;
