@@ -83,7 +83,7 @@ public class Main {
 	if(!(account instanceof Admin)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 
 	Admin manager = (Admin) account;
-	IO.print("\nlogged in as manager " + manager.getUsername() + "\n");
+	IO.print("\n---------------------\nlogged in as manager " + manager.getUsername() + "\n");
 	
 	try{choice = Integer.parseInt(IO.input("\n~actions~\n1. view transactions 2. add account 3. interest rate \npress any key to log out\n"));}
 	catch (NumberFormatException e){
@@ -104,7 +104,7 @@ public class Main {
     public static void viewTransactions(Admin manager) throws Exception{
 	if(manager == null){IO.print("error no user passed\n"); return;}
 	ArrayList<Transanction> transactions = Card.getAllTransanctions(manager);
-	IO.print("~transactions~");
+	IO.print("\n~transactions~\n");
 	IO.print("time | card id | amount\n");
 	for(Transanction t : transactions){
 	    IO.print(t + "\n");
@@ -115,7 +115,9 @@ public class Main {
 	if(manager == null){IO.print("error no user passed\n"); return;}
 	
 	Card card = chooseCard(manager);
-	try{choice = Integer.parseInt(IO.input("\n1. apply interest 2. set interest"));}
+	if(card == null){return;}
+
+	try{choice = Integer.parseInt(IO.input("\n1. apply interest 2. setinterest"));}
 	catch(NumberFormatException e){IO.print("please enter a valid choice.\n"); return;}
 
 	switch(choice){
@@ -128,7 +130,7 @@ public class Main {
     public static void addAccountPage(Admin manager) throws Exception{
 	if(manager == null){IO.print("error no user passed\n"); return;}
 
-	try{choice = Integer.parseInt(IO.input("~add account~\n1. user 2. manager \npress any key to go back\n"));}
+	try{choice = Integer.parseInt(IO.input("\n~add account~\n1. user 2. manager \npress any key to go back\n"));}
 	catch (NumberFormatException e){return;}
 
 	switch(choice){
@@ -163,7 +165,7 @@ public class Main {
 	if(!(account instanceof User)) {IO.print("invalid credentials\n"); page = 'l'; return;}
 	
 	User user = (User) account;
-	IO.print("logged in as user " + user.getUsername() + "\n");
+	IO.print("\n---------------------\nlogged in as user " + user.getUsername() + "\n");
 	if(user.getIDs().size() == 0){IO.print("\n!! you currently don't have a bank card. add one in settings. !!\n");}
 
 	Card card = null;
@@ -206,8 +208,8 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n");}
-	IO.print("your balance was $" + (card.getBalance() - amount) + "and is now $" + card.getBalance() + "\n");
+	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n"); return;}
+	IO.print("your balance was $" + (card.getBalance() - amount) + " and is now $" + card.getBalance() + "\n");
     }
 
     public static void withdraw(User user, int amount, Card card)throws Exception{
@@ -218,8 +220,9 @@ public class Main {
 
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
-	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid");};
-	IO.print("your balance was $" + (card.getBalance() + amount) + "and is now $" + card.getBalance() + "\n");  
+
+	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid"); return;};
+	IO.print("your balance was $" + (card.getBalance() + amount) + " and is now $" + card.getBalance() + "\n");  
     }
 
     public static void userSettingsPage(User user)throws Exception{
@@ -228,7 +231,7 @@ public class Main {
 
 	if(user == null){IO.print("error no user passed\n"); return;}
 
-	try{choice = Integer.parseInt(IO.input("~user settings~\n1. change password 2. change address 3. add card\n press any key to go back\n"));}
+	try{choice = Integer.parseInt(IO.input("\n~user settings~\n1. change password 2. change address 3. add card\n press any key to go back\n"));}
 	catch (NumberFormatException e){return;}
 
 	switch(choice){
@@ -237,7 +240,7 @@ public class Main {
 	    case 2:
 		user.setAddress(IO.input("enter your new address ")); return;
 	    case 3:
-		user.addCard(IO.input("enter your password again "));
+		user.addCard(IO.input("enter a password for you card. \nnote that it is IMMUTABLE. please choose wisely."));
 		ArrayList<Integer> ids = user.getIDs();
 		IO.print("your id for this card is " + ids.get(ids.size()-1) + "\n");
 		return;
@@ -267,9 +270,10 @@ public class Main {
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
 	    card = user.getCard(ids.get(choice - 1));
-	    card.login(IO.input("enter your password again: "));
-	    return card;
+	    if(card.login(IO.input("enter the card password: ")) == 0){return card;}
+	    else{IO.print("wrong card password."); return null;}
 	}
+
 	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
     }
 
@@ -284,17 +288,17 @@ public class Main {
 
 	IO.print("card number, ID, owner, balance\n");
 	for(String[] pair : ids){
-	    card = User.getCardGlobal(id.get(1), manager);
-	    IO.print(i + ". | " + card.getID() + " | " + id.get(0) + " | " + card.getBalance() +"\n");
+	    IO.print(i + ". | " + pair[1] + " | " + pair[0] + " | " + User.getCardGlobal(Integer.parseInt(pair[1]), manager).getBalance() +"\n");
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
-	    card = User.getCard(ids.get(choice - 1).get(1), manager);
-	    card.login(IO.input("enter your password again: "));
-	    return card;
+	    card = User.getCardGlobal(Integer.parseInt(ids.get(choice - 1)[1]), manager);
+	    if(card.login(IO.input("enter the card password: ")) == 0){return card;}
+	    else{IO.print("wrong card password."); return null;}
 	}
+
 	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
 
 
