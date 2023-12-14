@@ -58,7 +58,7 @@ public class Card {
   }
   public int withdraw (double amount) {
     if (!loggedIn) {return 1;}
-    if (amount > balance) {return -1;} //error: user going into debt.
+    if (amount > balance || amount <= 0) {return -1;} //error: user does not have sufficient brain cells
     balance -= amount;
     transanctions.add(new Transanction(-amount, id));
     rootTransanctions.add(new Transanction(-amount, id));
