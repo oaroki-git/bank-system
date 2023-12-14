@@ -84,7 +84,7 @@ public class Card {
   }
 
   public int login (String password) {
-    if (!verify(password)) {return 1;}
+    if (!verify(password)) {loggedIn = false; return 1;}
     loggedIn = true; return 0;
   }
   public int logout () {loggedIn = false; return 0;}
