@@ -121,9 +121,9 @@ public class Main {
 	catch(NumberFormatException e){IO.print("please enter a valid choice.\n"); return;}
 
 	switch(choice){
-	    case 1: card.applyInterest(manager); return;
+	    case 1: card.applyInterest(manager); IO.print("the amount is now $" + card.getBalance + ". \n"); return;
 	    case 2: card.setInterestRate(((double)(Integer.parseInt(IO.input("enter the new interest rate for this card (enter the percentage without the sign): "))))/100, manager);
-		    IO.print("the interest rate is now" + card.getInterestRate()*100 + "%.\n");
+		    IO.print("the interest rate is now " + card.getInterestRate()*100 + "%.\n");
 		    return;
 	    default: return;
 	}
