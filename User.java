@@ -108,7 +108,7 @@ public class User extends Account {
     cards.add(idx, card);
     allCards.add(idx, card);
     idx = globalSearch(card.getID());
-    cardIDs.add(idx, card.getID());
+    cardIDs.add(card.getID());
     String[] pair = {this.getUsername(), ""+card.getID()};
     allCardIDs.add(idx, pair);
     return 0;
