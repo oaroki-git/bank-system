@@ -117,7 +117,7 @@ public class Main {
 	Card card = chooseCard(manager);
 	if(card == null){return;}
 
-	try{choice = Integer.parseInt(IO.input("\n1. apply interest 2. setinterest"));}
+	try{choice = Integer.parseInt(IO.input("~interest rates~\n1. apply interest 2. set interest\n"));}
 	catch(NumberFormatException e){IO.print("please enter a valid choice.\n"); return;}
 
 	switch(choice){
@@ -228,7 +228,7 @@ public class Main {
     }
 
     public static void userSettingsPage(User user)throws Exception{
-	if(account.getStatus()){IO.print("user logged in");}
+	if(account.getStatus()){IO.print("\n---------------------\nlogged in as user " + user.getUsername() + "\n");}
 	else{IO.print("user logged out");}
 
 	if(user == null){IO.print("error no user passed\n"); return;}
@@ -242,7 +242,7 @@ public class Main {
 	    case 2:
 		user.setAddress(IO.input("enter your new address ")); return;
 	    case 3:
-		user.addCard(IO.input("enter a password for you card. \nnote that it is IMMUTABLE. please choose wisely."));
+		user.addCard(IO.input("enter a password for you card. \nnote that it is IMMUTABLE. please choose wisely "));
 		ArrayList<Integer> ids = user.getIDs();
 		IO.print("your id for this card is " + ids.get(ids.size()-1) + "\n");
 		return;
@@ -257,7 +257,7 @@ public class Main {
 
 	ArrayList<Integer> ids = user.getIDs();
 	Card card = null;
-	if(ids.size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n\n"); return null;}
+	if(ids.size() == 0){IO.print("you currently don't have any cards. add one and try again.\n\n"); return null;}
 
 	IO.print("choose card to use below: \n");
 	int i = 1;
