@@ -213,7 +213,7 @@ public class Main {
     }
 
     public static void withdraw(User user, int amount, Card card)throws Exception{
-	if(user.getCards().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
+	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
 	    
 	card = chooseCard(user);
 	if(card ==null){IO.print("invalid card."); return;}
@@ -251,24 +251,22 @@ public class Main {
 
 
     public static Card chooseCard(User user)throws Exception{
-	if(user.getCards().size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n"); return null;}
+	if(user.getIDs().size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n"); return null;}
 
 	IO.print("choose card to use below: \n");
 	ArrayList<Integer> ids = user.getIDs();
-	ArrayList<Card> cardsCopy = new ArrayList<Card>();
 	int i = 1;
 
 	IO.print("card number, ID, balance\n");
 	for(int id : ids){
 	    Card card = user.getCard(id);
-	    cardsCopy.add(card);
 	    IO.print(i + ". | " + id + " | " + card.getBalance() +"\n");
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
-	    Card card = ids.getCard(cardscopy.get(choice-1).getID());
+	    Card card = user.getCard(ids.get(choice - 1));
 	    card.login(IO.input("enter your password again: "));
 	    return card;
 	}
