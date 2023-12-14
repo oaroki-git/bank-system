@@ -29,6 +29,7 @@ public class Collection implements ExtendedIterable<Account> {
   private int search(String username) {
     if (accounts.size()==0) {return 0;}
     if (username.compareTo(accounts.get(0).getUsername()) <=0){return 0;}
+
     int L = 0;
     int R = accounts.size();
     int pointer = -1;
