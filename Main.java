@@ -118,7 +118,7 @@ public class Main {
 	try{choice = Integer.parseInt(IO.input("\n1. apply interest 2. set interest"));}
 	catch(NumberFormatException e){IO.print("please enter a valid choice.\n"); return;}
 
-	switch choice{
+	switch(choice){
 	    case 1: card.applyInterest(manager); return;
 	    case 2: card.setInterestRate(Double.parseDouble(IO.input("enter the new interest rate for this card(must be a double): ")), manager); return;
 	    default: return;
@@ -282,16 +282,16 @@ public class Main {
 	IO.print("choose card to use below: \n");
 	int i = 1;
 
-	IO.print("card number, ID, balance\n");
-	for(int id : ids){
-	    card = User.getCardGlobal(id, manager);
-	    IO.print(i + ". | " + id + " | " + card.getBalance() +"\n");
+	IO.print("card number, ID, owner, balance\n");
+	for(String[] pair : ids){
+	    card = User.getCardGlobal(id.get(1), manager);
+	    IO.print(i + ". | " + card.getID() + " | " + id.get(0) + " | " + card.getBalance() +"\n");
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
 	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
 	try{
-	    card = User.getCard(ids.get(choice - 1), manager);
+	    card = User.getCard(ids.get(choice - 1).get(1), manager);
 	    card.login(IO.input("enter your password again: "));
 	    return card;
 	}
