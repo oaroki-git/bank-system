@@ -1,10 +1,29 @@
 package bank.user;
-import bank.user.Account;
-//import bank.user.*;
-//import bank.IO;
+import bank.user.*;
+import bank.security.ExtendedIterable;
+import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
-public class Collection {	
+public class Collection implements ExtendedIterable<Account> {	
+  public class AccountIterator implements Iterator<Account> {
+    private int idx = 0;
+    private final List<Account> list;
+    public AccountIterator (List<Account> list) {this.list = list;}
+
+    public boolean hasNext () {
+      while (idx<list.size()) {
+        if (!(list.get(idx) instanceof User)) {idx++;continue;}
+	return true;
+      } return false;
+    }
+    public Account next () throws NoSuchElementException {
+      if (!hasNext()) {throw new NoSuchElementException("Stop Iteration");}
+      return list.get(idx++);
+    }
+  }
   private ArrayList<Account> accounts = new ArrayList<>();	
 
   private int search(String username) {
@@ -31,23 +50,22 @@ public class Collection {
     if (!username.equals(acc.getUsername())) {return null;}
     return acc;
   }
-
   public void add(Account acc) throws Exception {
     if (!(get(acc.getUsername())==null)) {throw new Exception("Username Collision.");}
     accounts.add(search(acc.getUsername()), acc);
   }
 
-//public static void main (String[] args) throws Exception {
-//  Collection accounts = new Collection();
-//  accounts.add(new Admin("root", "root"));
-//  Account acc = accounts.get("root");
-//  acc.login("root");
-//  IO.print(acc.toString());
-//  accounts.add(new User("user", "password", "addr", (Admin)acc));
-//  acc = accounts.get("user");
-//  IO.print(acc.toString());
-//  IO.print(accounts.accounts.toString());
-//  acc = accounts.get("root");
-//  IO.print(acc.toString());
-//}
+  public Iterator<Account> iterator() {return new AccountIterator(accounts);}
+
+  public void forEach(Consumer<? super Account> action) {return;} //bloat
+
+  public static void main (String[] args) throws Exception {
+    Collection accounts = new Collection();
+    accounts.add(new Admin("root", "root"));
+    Account acc = accounts.get("root");
+    acc.login("root");
+    accounts.add(new User("user0", "password", "addr", (Admin)acc));
+    accounts.add(new User("user1", "password", "addr", (Admin)acc));
+    for (Account user: accounts) {System.out.println(user);}
+  }
 }
