@@ -200,20 +200,20 @@ public class Main {
 
 
     public static void deposit(User user, int amount, Card card)throws Exception{
-	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
+	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n\n"); return;}
 
 	card = chooseCard(user);
-	if(card == null){IO.print("invalid card."); return;}
+	if(card == null){IO.print("invalid card. \nplease verify that a valid card was chosen and a valid password input.\n\n"); return;}
 
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to deposit:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n"); return;}
+	if(!(card.deposit(amount) == 0)){IO.print("please make sure the amount and password are valid\n\n"); return;}
 	IO.print("your balance was $" + (card.getBalance() - amount) + " and is now $" + card.getBalance() + "\n");
     }
 
     public static void withdraw(User user, int amount, Card card)throws Exception{
-	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n"); return;}
+	if(user.getIDs().size() == 0){IO.print("you don't have a bank card. create one in settings and try again.\n\n"); return;}
 	    
 	card = chooseCard(user);
 	if(card ==null){IO.print("invalid card."); return;}
@@ -221,7 +221,7 @@ public class Main {
 	try{amount = Integer.parseInt(IO.input("enter the amount you want to withdraw:\n"));}
 	catch (NumberFormatException e){IO.print("please enter a valid amount\n");}
 
-	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid"); return;};
+	if(!(card.withdraw(amount) == 0)){IO.print("please make sure the amount and password are valid\n\n"); return;};
 	IO.print("your balance was $" + (card.getBalance() + amount) + " and is now $" + card.getBalance() + "\n");  
     }
 
@@ -255,7 +255,7 @@ public class Main {
 
 	ArrayList<Integer> ids = user.getIDs();
 	Card card = null;
-	if(ids.size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n"); return null;}
+	if(ids.size() == 0){IO.print("\nyou currently don't have any cards. add one and try again.\n\n"); return null;}
 
 	IO.print("choose card to use below: \n");
 	int i = 1;
@@ -267,14 +267,14 @@ public class Main {
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
-	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
+	catch (NumberFormatException e){IO.print("invalid option\n\n"); return null; }
 	try{
 	    card = user.getCard(ids.get(choice - 1));
 	    if(card.login(IO.input("enter the card password: ")) == 0){return card;}
-	    else{IO.print("wrong card password."); return null;}
+	    else{IO.print("wrong card password.\n\n"); return null;}
 	}
 
-	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
+	catch (IndexOutOfBoundsException e){IO.print("invalid option\n\n"); return null;}
     }
 
     public static Card chooseCard(Admin manager)throws Exception{
@@ -292,14 +292,13 @@ public class Main {
 	    i += 1;
 	}
 	try{choice = Integer.parseInt(IO.input("enter a number:\n"));}
-	catch (NumberFormatException e){IO.print("invalid option\n"); return null; }
+	catch (NumberFormatException e){IO.print("invalid option\n\n"); return null; }
 	try{
 	    card = User.getCardGlobal(Integer.parseInt(ids.get(choice - 1)[1]), manager);
-	    if(card.login(IO.input("enter the card password: ")) == 0){return card;}
-	    else{IO.print("wrong card password."); return null;}
+	    return card;
 	}
 
-	catch (IndexOutOfBoundsException e){IO.print("invalid option\n"); return null;}
+	catch (IndexOutOfBoundsException e){return null;}
 
 
     }
