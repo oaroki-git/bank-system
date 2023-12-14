@@ -171,7 +171,7 @@ public class Main {
 	if(user.getIDs().size() == 0){IO.print("\n!! you currently don't have a bank card. add one in settings. !!\n");}
 
 	Card card = null;
-	int amount = 0;
+	double amount = 0;
 
 	try{choice = Integer.parseInt(IO.input("\n~actions~\n1. deposit 2. withdraw 3. view transaction history 4. settings\npress any key to log out\n"));}
 	catch (NumberFormatException e){
